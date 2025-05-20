@@ -1,21 +1,21 @@
-﻿using System.Collections.Generic;
-using DetectionEquipment.BaseDefinitions;
+﻿using DetectionEquipment.BaseDefinitions;
 
 namespace DetectionEquipment
 {
     internal partial class DetectionDefinitions
     {
-        internal readonly Dictionary<string, SensorDefinition> SensorDefinitions = new Dictionary<string, SensorDefinition>
+        internal readonly SensorDefinition[] SensorDefinitions = new SensorDefinition[]
         {
             // Your sensor definitions here.
+            ExampleSensorDef,
         };
 
-        internal readonly Dictionary<string, CountermeasureDefinition> CountermeasureDefinitions = new Dictionary<string, CountermeasureDefinition>
+        internal readonly CountermeasureDefinition[] CountermeasureDefinitions = new CountermeasureDefinition[]
         {
             // Your countermeasure definitions here.
         };
 
-        internal readonly Dictionary<string, CountermeasureEmitterDefinition> CountermeasureEmitterDefinitions = new Dictionary<string, CountermeasureEmitterDefinition>
+        internal readonly CountermeasureEmitterDefinition[] CountermeasureEmitterDefinitions = new CountermeasureEmitterDefinition[]
         {
             // Your countermeasure emitter definitions here.
         };

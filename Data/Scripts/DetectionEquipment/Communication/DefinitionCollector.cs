@@ -25,11 +25,11 @@ namespace DetectionEquipment.Communication
         {
             var allDefinitions = new DetectionDefinitions();
             foreach (var sensorDef in allDefinitions.SensorDefinitions)
-                DefinitionApi.RegisterDefinition(ModContext.ModName + "_" + sensorDef.Key, sensorDef.Value);
+                DefinitionApi.RegisterDefinition(ModContext.ModName + "_" + sensorDef.Name, sensorDef);
             foreach (var counterDef in allDefinitions.CountermeasureDefinitions)
-                DefinitionApi.RegisterDefinition(ModContext.ModName + "_" + counterDef.Key, counterDef.Value);
+                DefinitionApi.RegisterDefinition(ModContext.ModName + "_" + counterDef.Name, counterDef);
             foreach (var counterEDef in allDefinitions.CountermeasureEmitterDefinitions)
-                DefinitionApi.RegisterDefinition(ModContext.ModName + "_" + counterEDef.Key, counterEDef.Value);
+                DefinitionApi.RegisterDefinition(ModContext.ModName + "_" + counterEDef.Name, counterEDef);
             DefinitionApi.LogInfo($"{ModContext.ModName} - Registered all definitions.");
         }
     }
