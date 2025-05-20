@@ -1,2 +1,10 @@
-# Deteciton-Equipment-Mod-Template
-Template for mods using Detection Equipment's definition framework. github.com/ari-steas/Detection-Equipment
+# Detection-Equipment-Mod-Template
+# THIS IS A TEMPLATE. [FOLLOW THE GUIDE.]()... once I actually write it.
+
+Hey modders!
+
+Detection Equipment is a semi-realistic detection and EWAR mod for Space Engineers.
+
+This is a client mod, and must reference the original framework to function. [Check out the wiki]() (once I make it) for more information and guides, and feel free to message @aristeas. on Discord if you have any questions or comments.
+
+By [@Aristeas](https://github.com/ari-steas)
