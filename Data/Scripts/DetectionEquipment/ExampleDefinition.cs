@@ -12,7 +12,8 @@ namespace DetectionEquipment
 
             BlockSubtypes = new[]
             {
-                "LargeBlockSensor"
+                // These HAVE to be camera blocks for now.
+                "LargeCameraBlock"
             },
             Type = SensorDefinition.SensorType.Radar,
             MaxAperture = MathHelper.ToRadians(45),
