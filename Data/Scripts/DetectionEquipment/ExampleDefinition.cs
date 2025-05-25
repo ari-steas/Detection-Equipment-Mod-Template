@@ -1,5 +1,9 @@
-﻿using DetectionEquipment.BaseDefinitions;
+﻿using System;
+using DetectionEquipment.BaseDefinitions;
 using VRageMath;
+using static DetectionEquipment.BaseDefinitions.CountermeasureDefinition;
+using static DetectionEquipment.BaseDefinitions.CountermeasureEmitterDefinition;
+using static DetectionEquipment.BaseDefinitions.SensorDefinition;
 
 namespace DetectionEquipment
 {
@@ -15,7 +19,7 @@ namespace DetectionEquipment
                 // These HAVE to be camera blocks for now.
                 "LargeCameraBlock"
             },
-            Type = SensorDefinition.SensorType.Radar,
+            Type = SensorType.Radar,
             MaxAperture = MathHelper.ToRadians(45),
             MinAperture = MathHelper.ToRadians(35),
             Movement = null,
@@ -25,7 +29,7 @@ namespace DetectionEquipment
             RangeErrorModifier = 1,
 
             MaxPowerDraw = 25000,
-            RadarProperties = new SensorDefinition.RadarPropertiesDefinition
+            RadarProperties = new RadarPropertiesDefinition
             {
                 ReceiverArea = 1,
                 PowerEfficiencyModifier = 0.00000000000000025,
