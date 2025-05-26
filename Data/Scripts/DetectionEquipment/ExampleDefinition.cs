@@ -20,6 +20,7 @@ namespace DetectionEquipment
                 "LargeCameraBlock"
             },
             Type = SensorType.Radar,
+            SensorEmpty = "",
             MaxAperture = MathHelper.ToRadians(45),
             MinAperture = MathHelper.ToRadians(35),
             Movement = null,

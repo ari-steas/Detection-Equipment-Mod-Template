@@ -11,12 +11,11 @@ namespace DetectionEquipment.BaseDefinitions
     {
         #if MAINMOD
         [ProtoIgnore] public int Id; // DO NOT NETWORK THIS!!! Hashcode of the definition name.
-        #else
+        #endif
         /// <summary>
         /// Unique name for this definition.
         /// </summary>
         [ProtoIgnore] public string Name;
-        #endif
 
         /// <summary>
         /// Subtypes this sensor is attached to.
@@ -58,6 +57,10 @@ namespace DetectionEquipment.BaseDefinitions
         /// Radar properties. Set to null if unused.
         /// </summary>
         [ProtoMember(10)] public RadarPropertiesDefinition RadarProperties = new RadarPropertiesDefinition();
+        /// <summary>
+        /// Dummy empty name for the sensor. If blank or invalid, defaults to the elevation subpart.
+        /// </summary>
+        [ProtoMember(11)] public string SensorEmpty;
 
         /// <summary>
         /// Defines properties for subpart-based movement.
@@ -97,9 +100,29 @@ namespace DetectionEquipment.BaseDefinitions
             /// Elevation rotation rate, in radians per second.
             /// </summary>
             [ProtoMember(8)] public double ElevationRate = 8 * Math.PI / 60;
+            /// <summary>
+            /// Rest azimuth for this sensor
+            /// </summary>
+            [ProtoMember(9)] public double HomeAzimuth = 0;
+            /// <summary>
+            /// Rest elevation for this sensor
+            /// </summary>
+            [ProtoMember(10)] public double HomeElevation = 0;
 
             [ProtoIgnore] public bool CanRotateFull => MaxAzimuth >= Math.PI && MinAzimuth <= -Math.PI;
             [ProtoIgnore] public bool CanElevateFull => MaxElevation >= Math.PI && MinElevation <= -Math.PI;
+
+            [ProtoIgnore] public object[] DataSet => new object[]
+            {
+                AzimuthPart,
+                ElevationPart,
+                MinAzimuth,
+                MaxAzimuth,
+                MinElevation,
+                MaxElevation,
+                AzimuthRate,
+                ElevationRate,
+            };
         }
 
         /// <summary>
@@ -124,6 +147,14 @@ namespace DetectionEquipment.BaseDefinitions
             /// Radar frequency. Only applies to active radars.
             /// </summary>
             [ProtoMember(4)] public double Frequency = 2800E6;
+
+            [ProtoIgnore] public object[] DataSet => new object[]
+            {
+                ReceiverArea,
+                PowerEfficiencyModifier,
+                Bandwidth,
+                Frequency,
+            };
         }
 
         [ProtoContract]
@@ -136,24 +167,21 @@ namespace DetectionEquipment.BaseDefinitions
             Infrared = 4,
         }
 
-        #if MAINMOD
-        // TODO: Add new properties
-        public static explicit operator SensorDefTuple(SensorDefinition d) => new SensorDefTuple(
-                (int) d.Type,
-                d.MaxAperture,
-                d.MinAperture,
-                d.Movement == null ? null : new MyTuple<double, double, double, double, double, double>?(new MyTuple<double, double, double, double, double, double>(
-                    d.Movement.MinAzimuth,
-                    d.Movement.MaxAzimuth,
-                    d.Movement.MinElevation,
-                    d.Movement.MaxElevation,
-                    d.Movement.AzimuthRate,
-                    d.Movement.ElevationRate
-                    )),
-                d.DetectionThreshold,
-                d.MaxPowerDraw
-                );
+        [ProtoIgnore] public object[] DataSet => new object[]
+        {
+            BlockSubtypes,
+            (int) Type,
+            MaxAperture,
+            MinAperture,
+            Movement?.DataSet,
+            DetectionThreshold,
+            MaxPowerDraw,
+            BearingErrorModifier,
+            RangeErrorModifier,
+            RadarProperties?.DataSet,
+        };
 
+        #if MAINMOD
         public static bool Verify(SensorDefinition def)
         {
             bool isValid = true;
@@ -177,6 +205,20 @@ namespace DetectionEquipment.BaseDefinitions
             {
                 Log.Info("SensorDefinition", "Radar properties are null on a radar sensor!");
                 isValid = false;
+            }
+
+            if (def.Movement != null)
+            {
+                if (def.Movement.AzimuthPart.StartsWith("subpart"))
+                {
+                    Log.Info("SensorDefinition", "Azimuth subpart starts with \"subpart_\" - this will likely result in part location failure.");
+                    isValid = false;
+                }
+                if (def.Movement.ElevationPart.StartsWith("subpart"))
+                {
+                    Log.Info("SensorDefinition", "Elevation subpart starts with \"subpart_\" - this will likely result in part location failure.");
+                    isValid = false;
+                }
             }
             // TODO: more & better validation
 
