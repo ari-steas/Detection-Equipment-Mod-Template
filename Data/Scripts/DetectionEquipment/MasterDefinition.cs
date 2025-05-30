@@ -13,11 +13,13 @@ namespace DetectionEquipment
         internal readonly CountermeasureDefinition[] CountermeasureDefinitions = new CountermeasureDefinition[]
         {
             // Your countermeasure definitions here.
+            ExampleCountermeasureDef,
         };
 
         internal readonly CountermeasureEmitterDefinition[] CountermeasureEmitterDefinitions = new CountermeasureEmitterDefinition[]
         {
             // Your countermeasure emitter definitions here.
+            ExampleCountermeasureEmitterDef,
         };
     }
 }
