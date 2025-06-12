@@ -6,12 +6,10 @@ namespace DetectionEquipment.BaseDefinitions
     /// <summary>
     /// Basic definition for a single sensor.
     /// </summary>
-    [ProtoContract]
+    [ProtoContract(UseProtoMembersOnly = true)]
     public class SensorDefinition
     {
-        #if MAINMOD
-        [ProtoIgnore] public int Id; // DO NOT NETWORK THIS!!! Hashcode of the definition name.
-        #endif
+        // can't define preprocessor directives, otherwise would have
         /// <summary>
         /// Unique name for this definition.
         /// </summary>
@@ -61,6 +59,10 @@ namespace DetectionEquipment.BaseDefinitions
         /// Dummy empty name for the sensor. If blank or invalid, defaults to the elevation subpart.
         /// </summary>
         [ProtoMember(11)] public string SensorEmpty;
+        /// <summary>
+        /// Name that shows in the sensor's terminal.
+        /// </summary>
+        [ProtoMember(12)] public string TerminalName;
 
         /// <summary>
         /// Defines properties for subpart-based movement.
@@ -108,27 +110,12 @@ namespace DetectionEquipment.BaseDefinitions
             /// Rest elevation for this sensor
             /// </summary>
             [ProtoMember(10)] public double HomeElevation = 0;
-
-            [ProtoIgnore] public bool CanRotateFull => MaxAzimuth >= Math.PI && MinAzimuth <= -Math.PI;
-            [ProtoIgnore] public bool CanElevateFull => MaxElevation >= Math.PI && MinElevation <= -Math.PI;
-
-            [ProtoIgnore] public object[] DataSet => new object[]
-            {
-                AzimuthPart,
-                ElevationPart,
-                MinAzimuth,
-                MaxAzimuth,
-                MinElevation,
-                MaxElevation,
-                AzimuthRate,
-                ElevationRate,
-            };
         }
 
         /// <summary>
         /// Defines radar-specific properties for passive and active radars.
         /// </summary>
-        [ProtoContract]
+        [ProtoContract(UseProtoMembersOnly = true)]
         public class RadarPropertiesDefinition
         {
             /// <summary>
@@ -147,14 +134,6 @@ namespace DetectionEquipment.BaseDefinitions
             /// Radar frequency. Only applies to active radars.
             /// </summary>
             [ProtoMember(4)] public double Frequency = 2800E6;
-
-            [ProtoIgnore] public object[] DataSet => new object[]
-            {
-                ReceiverArea,
-                PowerEfficiencyModifier,
-                Bandwidth,
-                Frequency,
-            };
         }
 
         [ProtoContract]
@@ -166,64 +145,5 @@ namespace DetectionEquipment.BaseDefinitions
             Optical = 3,
             Infrared = 4,
         }
-
-        [ProtoIgnore] public object[] DataSet => new object[]
-        {
-            BlockSubtypes,
-            (int) Type,
-            MaxAperture,
-            MinAperture,
-            Movement?.DataSet,
-            DetectionThreshold,
-            MaxPowerDraw,
-            BearingErrorModifier,
-            RangeErrorModifier,
-            RadarProperties?.DataSet,
-        };
-
-        #if MAINMOD
-        public static bool Verify(SensorDefinition def)
-        {
-            bool isValid = true;
-
-            if (def == null)
-            {
-                Log.Info("SensorDefinition", "Definition null!");
-                return false;
-            }
-            if (def.BlockSubtypes == null || def.BlockSubtypes.Length == 0)
-            {
-                Log.Info("SensorDefinition", "BlockSubtypes unset!");
-                isValid = false;
-            }
-            if (def.MinAperture > def.MaxAperture || def.MinAperture < 0 || def.MaxAperture < 0)
-            {
-                Log.Info("SensorDefinition", "Aperture invalid! Make sure both Min and Max are greater than zero, and min is less than max.");
-                isValid = false;
-            }
-            if (def.RadarProperties == null && def.Type == SensorType.Radar)
-            {
-                Log.Info("SensorDefinition", "Radar properties are null on a radar sensor!");
-                isValid = false;
-            }
-
-            if (def.Movement != null)
-            {
-                if (def.Movement.AzimuthPart.StartsWith("subpart"))
-                {
-                    Log.Info("SensorDefinition", "Azimuth subpart starts with \"subpart_\" - this will likely result in part location failure.");
-                    isValid = false;
-                }
-                if (def.Movement.ElevationPart.StartsWith("subpart"))
-                {
-                    Log.Info("SensorDefinition", "Elevation subpart starts with \"subpart_\" - this will likely result in part location failure.");
-                    isValid = false;
-                }
-            }
-            // TODO: more & better validation
-
-            return isValid;
-        }
-        #endif
     }
 }

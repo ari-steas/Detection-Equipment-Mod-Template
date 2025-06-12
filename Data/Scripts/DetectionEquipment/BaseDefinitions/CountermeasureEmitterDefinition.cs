@@ -8,14 +8,10 @@ namespace DetectionEquipment.BaseDefinitions
     [ProtoContract]
     public class CountermeasureEmitterDefinition
     {
-        #if MAINMOD
-        [ProtoIgnore] public int Id; // DO NOT NETWORK THIS!!! Hashcode of the definition name.
-        #else
         /// <summary>
         /// Unique name for this definition.
         /// </summary>
         [ProtoIgnore] public string Name;
-        #endif
 
         /// <summary>
         /// Subtypes this emitter is attached to.
@@ -67,35 +63,9 @@ namespace DetectionEquipment.BaseDefinitions
         /// </summary>
         [ProtoMember(9)] public string FireParticle;
 
-
-        #if MAINMOD
-        public static bool Verify(CountermeasureEmitterDefinition def)
-        {
-            bool isValid = true;
-
-            if (def == null)
-            {
-                Log.Info("CountermeasureEmitterDefinition", "Definition null!");
-                return false;
-            }
-            if (def.BlockSubtypes == null || def.BlockSubtypes.Length == 0)
-            {
-                Log.Info("CountermeasureEmitterDefinition", "BlockSubtypes unset!");
-                isValid = false;
-            }
-            if (def.Muzzles == null || def.Muzzles.Length == 0)
-            {
-                Log.Info("CountermeasureEmitterDefinition", "Muzzles unset! Defaulting to center of block.");
-                def.Muzzles = Array.Empty<string>();
-            }
-            if (def.CountermeasureIds == null || def.CountermeasureIds.Length == 0)
-            {
-                Log.Info("CountermeasureEmitterDefinition", "CountermeasureIds unset!");
-                isValid = false;
-            }
-
-            return isValid;
-        }
-        #endif
+        /// <summary>
+        /// Power draw while active, in megawatts.
+        /// </summary>
+        [ProtoMember(11)] public float ActivePowerDraw;
     }
 }
