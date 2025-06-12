@@ -33,7 +33,8 @@ namespace DetectionEquipment
             ReloadTime = 0,
             MagazineItem = null,
             EjectionVelocity = 0,
-            FireParticle = null
+            FireParticle = null,
+            ActivePowerDraw = 10,
         };
     }
 }

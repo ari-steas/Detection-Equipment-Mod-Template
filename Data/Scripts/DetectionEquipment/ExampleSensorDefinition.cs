@@ -19,6 +19,7 @@ namespace DetectionEquipment
                 // These HAVE to be camera blocks for now.
                 "LargeCameraBlock"
             },
+            TerminalName = "Example Sensor",
             Type = SensorType.Radar,
             SensorEmpty = "",
             MaxAperture = MathHelper.ToRadians(45),

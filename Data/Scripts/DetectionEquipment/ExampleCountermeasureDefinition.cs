@@ -14,11 +14,11 @@ namespace DetectionEquipment
         {
             Name = "ExampleCountermeasureDef",
 
-            CountermeasureType = CountermeasureDefinition.CountermeasureTypeEnum.Radar,
+            CountermeasureType = CountermeasureTypeEnum.Radar,
             MaxRange = 50000,
             FalloffScalar = 1.0E12f,
             MinNoise = 0f,
-            FalloffType = CountermeasureDefinition.FalloffTypeEnum.Quadratic,
+            FalloffType = FalloffTypeEnum.Quadratic,
             MinEffectAperture = (float) Math.PI,
             MaxEffectAperture = (float) Math.PI,
             MaxLifetime = uint.MaxValue,
