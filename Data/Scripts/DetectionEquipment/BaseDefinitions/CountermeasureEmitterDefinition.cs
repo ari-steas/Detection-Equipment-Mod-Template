@@ -67,5 +67,10 @@ namespace DetectionEquipment.BaseDefinitions
         /// Power draw while active, in megawatts.
         /// </summary>
         [ProtoMember(11)] public float ActivePowerDraw;
+
+        /// <summary>
+        /// Inventory size, kiloliters
+        /// </summary>
+        [ProtoMember(12)] public float InventorySize;
     }
 }

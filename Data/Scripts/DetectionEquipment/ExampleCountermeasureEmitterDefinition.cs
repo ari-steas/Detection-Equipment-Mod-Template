@@ -35,6 +35,7 @@ namespace DetectionEquipment
             EjectionVelocity = 0,
             FireParticle = null,
             ActivePowerDraw = 10,
+            InventorySize = 0,
         };
     }
 }
