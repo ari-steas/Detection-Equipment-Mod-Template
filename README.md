@@ -1,5 +1,5 @@
 # Detection-Equipment-Mod-Template
-# THIS IS A TEMPLATE. [FOLLOW THE GUIDE.](https://github.com/ari-steas/Detection-Equipment/wiki).
+# THIS IS A TEMPLATE. [FOLLOW THE GUIDE.](https://github.com/ari-steas/Detection-Equipment/wiki)
 
 Hey modders!
 
