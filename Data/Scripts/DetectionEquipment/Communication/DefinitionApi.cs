@@ -124,6 +124,14 @@ namespace DetectionEquipment.Communication
         /// <param name="definitionId"></param>
         public void RemoveDefinition<T>(string definitionId) where T : class => _removeDefinition?.Invoke(definitionId, typeof(T));
 
+        /// <summary>
+        /// Checks if a given definition and its type exist.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="definitionId"></param>
+        /// <returns></returns>
+        public bool HasDefinition<T>(string definitionId) where T : class => _hasDefinition?.Invoke(definitionId, typeof(T)) ?? false;
+
         #endregion
 
         #region Delegates
@@ -191,6 +199,7 @@ namespace DetectionEquipment.Communication
         private Func<string, Type, byte[]> _getDefinition;
         private Func<Type, string[]> _getDefinitionsOfType;
         private Action<string, Type> _removeDefinition;
+        private Func<string, Type, bool> _hasDefinition;
 
         // Delegates
         private Action<string, Type, Dictionary<string, Delegate>> _registerDelegates;
@@ -227,6 +236,7 @@ namespace DetectionEquipment.Communication
             SetApiMethod("GetDefinition", ref _getDefinition);
             SetApiMethod("GetDefinitionsOfType", ref _getDefinitionsOfType);
             SetApiMethod("RemoveDefinition", ref _removeDefinition);
+            SetApiMethod("HasDefinition", ref _hasDefinition);
 
             // Delegates
             SetApiMethod("RegisterDelegates", ref _registerDelegates);

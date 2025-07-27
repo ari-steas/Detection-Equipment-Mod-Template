@@ -1,5 +1,6 @@
-﻿using System;
-using ProtoBuf;
+﻿using ProtoBuf;
+using System;
+using System.ComponentModel;
 
 namespace DetectionEquipment.BaseDefinitions
 {
@@ -134,6 +135,10 @@ namespace DetectionEquipment.BaseDefinitions
             /// Radar frequency. Only applies to active radars.
             /// </summary>
             [ProtoMember(4)] public double Frequency = 2800E6;
+            /// <summary>
+            /// Determines whether the angle of the radar's cone matters for the reciever area in gain calcs.
+            /// </summary>
+            [ProtoMember(5)] [DefaultValue(true)] public bool AccountForRadarAngle = true;
         }
 
         [ProtoContract]
