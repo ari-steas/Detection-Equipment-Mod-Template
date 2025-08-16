@@ -1,4 +1,5 @@
-﻿using VRage.Game.Components;
+﻿using DetectionEquipment.BaseDefinitions;
+using VRage.Game.Components;
 using VRage.Utils;
 
 namespace DetectionEquipment.Communication
@@ -24,12 +25,27 @@ namespace DetectionEquipment.Communication
         private void OnDefApiReady()
         {
             var allDefinitions = new DetectionDefinitions();
-            foreach (var sensorDef in allDefinitions.SensorDefinitions)
-                DefinitionApi.RegisterDefinition(sensorDef.Name, sensorDef);
-            foreach (var counterDef in allDefinitions.CountermeasureDefinitions)
-                DefinitionApi.RegisterDefinition(counterDef.Name, counterDef);
-            foreach (var counterEDef in allDefinitions.CountermeasureEmitterDefinitions)
-                DefinitionApi.RegisterDefinition(counterEDef.Name, counterEDef);
+            foreach (var def in allDefinitions.SensorDefinitions)
+            {
+                DefinitionApi.RegisterDefinition(def.Name, def);
+                var delegates = def.GenerateDelegates();
+                if (delegates != null)
+                    DefinitionApi.RegisterDelegates<SensorDefinition>(def.Name, delegates);
+            }
+            foreach (var def in allDefinitions.CountermeasureDefinitions)
+            {
+                DefinitionApi.RegisterDefinition(def.Name, def);
+                var delegates = def.GenerateDelegates();
+                if (delegates != null)
+                    DefinitionApi.RegisterDelegates<CountermeasureDefinition>(def.Name, delegates);
+            }
+            foreach (var def in allDefinitions.CountermeasureEmitterDefinitions)
+            {
+                DefinitionApi.RegisterDefinition(def.Name, def);
+                var delegates = def.GenerateDelegates();
+                if (delegates != null)
+                    DefinitionApi.RegisterDelegates<CountermeasureEmitterDefinition>(def.Name, delegates);
+            }
             DefinitionApi.LogInfo($"{ModContext.ModName} - Registered all definitions.");
         }
     }

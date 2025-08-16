@@ -1,5 +1,7 @@
-﻿using System;
-using DetectionEquipment.BaseDefinitions;
+﻿using DetectionEquipment.BaseDefinitions;
+using System;
+using Sandbox.ModAPI;
+using VRage;
 using VRageMath;
 using static DetectionEquipment.BaseDefinitions.CountermeasureDefinition;
 using static DetectionEquipment.BaseDefinitions.CountermeasureEmitterDefinition;
@@ -24,7 +26,16 @@ namespace DetectionEquipment
             MaxLifetime = uint.MaxValue,
             HasPhysics = false,
             DragMultiplier = 0f,
-            ParticleEffect = null
+            ParticleEffect = null,
+
+            ApplyDrfmToOtherTargets = true,
+            MaxDrfmRange = 50000,
+            ApplyOutsideSensorCone = false,
+            DrfmEffects = (sensorId, counterId, emitter, targetId, targetCrossSection, targetRange, maxRangeErr, targetBearing, maxBearingErr, iffCodes) =>
+            {
+                MyAPIGateway.Utilities.ShowNotification($"DrfmEffects invoked! {sensorId} {counterId} {emitter?.CustomName ?? "NULLEMM"}, {targetId}, {targetCrossSection}, {targetRange}, {maxRangeErr}, {targetBearing}, {maxBearingErr}, {iffCodes.Length}", 1000/60);
+                return new MyTuple<double, double, double, Vector3D, double, string[]>(0, 0, 0, targetBearing, 0, iffCodes);
+            }
         };
     }
 }

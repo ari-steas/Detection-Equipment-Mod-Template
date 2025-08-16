@@ -25,7 +25,7 @@ namespace DetectionEquipment
             },
             CountermeasureIds = new[]
             {
-                "DetEq_SimpleAreaJammer",
+                "ExampleCountermeasureDef",
             },
             IsCountermeasureAttached = true,
             ShotsPerSecond = 60,

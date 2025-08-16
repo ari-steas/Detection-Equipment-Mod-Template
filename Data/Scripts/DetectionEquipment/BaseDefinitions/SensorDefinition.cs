@@ -1,5 +1,6 @@
 ﻿using ProtoBuf;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 
 namespace DetectionEquipment.BaseDefinitions
@@ -8,14 +9,8 @@ namespace DetectionEquipment.BaseDefinitions
     /// Basic definition for a single sensor.
     /// </summary>
     [ProtoContract(UseProtoMembersOnly = true)]
-    public class SensorDefinition
+    public class SensorDefinition : DefinitionBase
     {
-        // can't define preprocessor directives, otherwise would have
-        /// <summary>
-        /// Unique name for this definition.
-        /// </summary>
-        [ProtoIgnore] public string Name;
-
         /// <summary>
         /// Subtypes this sensor is attached to.
         /// </summary>
@@ -111,6 +106,9 @@ namespace DetectionEquipment.BaseDefinitions
             /// Rest elevation for this sensor
             /// </summary>
             [ProtoMember(10)] public double HomeElevation = 0;
+
+            [ProtoIgnore] public bool CanRotateFull => MaxAzimuth >= Math.PI && MinAzimuth <= -Math.PI;
+            [ProtoIgnore] public bool CanElevateFull => MaxElevation >= Math.PI && MinElevation <= -Math.PI;
         }
 
         /// <summary>
@@ -120,7 +118,7 @@ namespace DetectionEquipment.BaseDefinitions
         public class RadarPropertiesDefinition
         {
             /// <summary>
-            /// Receiver area, in square meters.
+            /// Receiver area, in square meters. Applies to active radar, passive radar, and comms sensors.
             /// </summary>
             [ProtoMember(1)] public double ReceiverArea = 2.5 * 2.5;
             /// <summary>
@@ -135,6 +133,7 @@ namespace DetectionEquipment.BaseDefinitions
             /// Radar frequency. Only applies to active radars.
             /// </summary>
             [ProtoMember(4)] public double Frequency = 2800E6;
+
             /// <summary>
             /// Determines whether the angle of the radar's cone matters for the reciever area in gain calcs.
             /// </summary>
@@ -149,6 +148,59 @@ namespace DetectionEquipment.BaseDefinitions
             PassiveRadar = 2,
             Optical = 3,
             Infrared = 4,
+            Antenna = 5,
+        }
+
+        public override bool Verify(out string reason)
+        {
+            bool isValid = true;
+            reason = "";
+
+            if (BlockSubtypes == null || BlockSubtypes.Length == 0)
+            {
+                reason += "BlockSubtypes unset!\n";
+                isValid = false;
+            }
+            if (MinAperture > MaxAperture || MinAperture < 0 || MaxAperture < 0)
+            {
+                reason += "Aperture invalid! Make sure both Min and Max are greater than zero, and min is less than max.\n";
+                isValid = false;
+            }
+            if (RadarProperties == null && Type == SensorType.Radar)
+            {
+                reason += "Radar properties are null on a radar sensor!\n";
+                isValid = false;
+            }
+
+            if (Movement != null)
+            {
+                if (Movement.AzimuthPart.StartsWith("subpart"))
+                {
+                    reason += "Azimuth subpart starts with \"subpart_\" - this will likely result in part location failure.\n";
+                    isValid = false;
+                }
+                if (Movement.ElevationPart.StartsWith("subpart"))
+                {
+                    reason += "Elevation subpart starts with \"subpart_\" - this will likely result in part location failure.\n";
+                    isValid = false;
+                }
+            }
+
+            if (MaxPowerDraw <= 0)
+                MaxPowerDraw = 1;
+            // TODO: more & better validation
+
+            return isValid;
+        }
+
+        protected override void AssignDelegates(Dictionary<string, Delegate> delegates)
+        {
+            // no delegates to assign
+        }
+
+        public override Dictionary<string, Delegate> GenerateDelegates()
+        {
+            return null;
         }
     }
 }
