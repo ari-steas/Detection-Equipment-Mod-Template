@@ -1,5 +1,6 @@
 ﻿using DetectionEquipment.BaseDefinitions;
 using System;
+using System.Collections.Generic;
 using Sandbox.ModAPI;
 using VRage;
 using VRageMath;
@@ -33,8 +34,15 @@ namespace DetectionEquipment
             ApplyOutsideSensorCone = false,
             DrfmEffects = (sensorId, counterId, emitter, targetId, targetCrossSection, targetRange, maxRangeErr, targetBearing, maxBearingErr, iffCodes) =>
             {
-                MyAPIGateway.Utilities.ShowNotification($"DrfmEffects invoked! {sensorId} {counterId} {emitter?.CustomName ?? "NULLEMM"}, {targetId}, {targetCrossSection}, {targetRange}, {maxRangeErr}, {targetBearing}, {maxBearingErr}, {iffCodes.Length}", 1000/60);
+                MyAPIGateway.Utilities.ShowNotification($"DrfmEffects: {sensorId} {counterId} {emitter?.CustomName ?? "NULLEMM"}, {targetId}, {targetCrossSection}, {targetRange}, {maxRangeErr}, {targetBearing}, {maxBearingErr}, {iffCodes.Length}", 1000/60);
                 return new MyTuple<double, double, double, Vector3D, double, string[]>(0, 0, 0, targetBearing, 0, iffCodes);
+            },
+            DrfmGenerator = (sensorId, sensorBlock, counterId, emitter) =>
+            {
+                return new[]
+                {
+                    new MyTuple<long, double, Vector2D, Vector3D, double, string[]>(100, 500, Vector2D.UnitX * 500, Vector3D.Forward, 0, Array.Empty<string>())
+                };
             }
         };
     }
