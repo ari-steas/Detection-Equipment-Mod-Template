@@ -4,6 +4,7 @@ using VRageMath;
 using static DetectionEquipment.BaseDefinitions.CountermeasureDefinition;
 using static DetectionEquipment.BaseDefinitions.CountermeasureEmitterDefinition;
 using static DetectionEquipment.BaseDefinitions.SensorDefinition;
+using static DetectionEquipment.BaseDefinitions.ControlBlockDefinition;
 
 namespace DetectionEquipment
 {

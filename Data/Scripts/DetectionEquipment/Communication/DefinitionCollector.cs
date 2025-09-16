@@ -46,6 +46,13 @@ namespace DetectionEquipment.Communication
                 if (delegates != null)
                     DefinitionApi.RegisterDelegates<CountermeasureEmitterDefinition>(def.Name, delegates);
             }
+            foreach (var def in allDefinitions.ControlBlockDefinitions)
+            {
+                DefinitionApi.RegisterDefinition(def.Name, def);
+                var delegates = def.GenerateDelegates();
+                if (delegates != null)
+                    DefinitionApi.RegisterDelegates<ControlBlockDefinition>(def.Name, delegates);
+            }
             DefinitionApi.LogInfo($"{ModContext.ModName} - Registered all definitions.");
         }
     }

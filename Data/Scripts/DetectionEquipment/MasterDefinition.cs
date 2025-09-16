@@ -29,5 +29,11 @@ namespace DetectionEquipment
             // Your countermeasure emitter definitions here.
             ExampleCountermeasureEmitterDef,
         };
+
+        internal readonly ControlBlockDefinition[] ControlBlockDefinitions = new ControlBlockDefinition[]
+        {
+            // Your control block definitions here. Note - these MUST be conveyor sorters for settings to work properly.
+            ExampleControlBlockDef,
+        };
     }
 }
